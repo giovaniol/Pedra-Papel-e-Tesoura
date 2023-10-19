@@ -2,7 +2,7 @@ package Model;
 
 public abstract class Coisa{
     private int sinal;
-    protected int pontos;
+    
 
 
 
