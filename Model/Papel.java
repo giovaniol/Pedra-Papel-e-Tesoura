@@ -1,12 +1,16 @@
 package Model;
-public class Papel extends Coisa{
-    
 
+public class Papel extends Coisa {
 
-    public Papel(){
-        super(1);
+    @Override
+    public boolean batalha(Coisa escolha) {
+        if (escolha instanceof Pedra) {
+            return true;
+        } else if (escolha instanceof Papel) {
+            
+            return false;
+        }
+        return false;
     }
 
-
-    
 }

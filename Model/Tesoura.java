@@ -1,11 +1,16 @@
 package Model;
 
-public class Tesoura extends Coisa{
- 
-    
+public class Tesoura extends Coisa {
 
-    public Tesoura(){
-        super(3);
+    @Override
+    public boolean batalha(Coisa escolha) {
+        if (escolha instanceof Papel) {
+            return true;
+        } else if (escolha instanceof Tesoura) {
+
+            return false;
+        }
+        return false;
     }
 
 }

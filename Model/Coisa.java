@@ -1,34 +1,7 @@
 package Model;
 
-public abstract class Coisa{
-    private int sinal;
-    
+public abstract class Coisa {
 
-
-
-    public Coisa(int sinal){
-        setSinal(sinal);
-        
-    }
-    
-
-    public int getSinal() {
-        return sinal;
-    }
-
-
-    public void setSinal(int sinal) {
-        this.sinal = sinal;
-    }
-
-
-
-
-
-
-
-
-
+    public abstract boolean batalha(Coisa escolha);
 
 }
-

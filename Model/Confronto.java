@@ -1,14 +1,12 @@
 package Model;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Confronto {
-    private Coisa jogador, oponente, oponente2;
+    private Jogador jogador, jogador2;
     private int rounds, resposta, resposta2;
     private int[] pontos = new int[2];
     private Scanner ler = new Scanner(System.in);
-    private Random gerador = new Random();
 
     public void Confrontar() {
         do {
@@ -21,6 +19,7 @@ public class Confronto {
             switch (resposta) {
                 case 1:
                     do {
+
                         System.out.println("Quantas Rodadas?\n1 - Melhor de 1\n2 - Melhor de 3");
                         rounds = ler.nextInt();
                     } while (rounds < 1 || rounds > 2);
@@ -45,35 +44,43 @@ public class Confronto {
 
     private void luta(int rounds) {
         for (int i = 0; i < rounds; i++) {
-            do{
-                System.out.println("---------------------------------\n");
+            do {
+                text();
                 System.out.println("O Que você vai jogar?\n1 - Papel\n2 - Pedra\n3 - Papel\n");
                 resposta2 = ler.nextInt();
-            }while(resposta2 < 1 || resposta2 > 3);
+            } while (resposta2 < 1 || resposta2 > 3);
 
             switch (resposta2) {
                 case 1:
 
-                    escolha(resposta2);
-                    oponente = gerarCoisa(1);
-                    batalha(jogador, oponente);
-                    System.out.println("---------------------------------");
+                    jogador = instanciar(jogador, resposta2);
+                    jogador.escolha(resposta2);
+                    escrever(jogador);
+                    jogador2 = instanciar(jogador2);
+                    escrever();
+                    batalha(jogador, jogador2);
+                    text();
 
                     break;
                 case 2:
-
-                    escolha(resposta2);
-                    oponente = gerarCoisa(1);
-                    batalha(jogador, oponente);
-                    System.out.println("---------------------------------");
+                    jogador = instanciar(jogador, resposta2);
+                    jogador.escolha(resposta2);
+                    escrever(jogador);
+                    jogador2 = instanciar(jogador2);
+                    escrever();
+                    batalha(jogador, jogador2);
+                    text();
 
                     break;
                 case 3:
 
-                    escolha(resposta2);
-                    oponente = gerarCoisa(1);
-                    batalha(jogador, oponente);
-                    System.out.println("---------------------------------\n");
+                    jogador = instanciar(jogador, resposta2);
+                    jogador.escolha(resposta2);
+                    escrever(jogador);
+                    jogador2 = instanciar(jogador2);
+                    escrever();
+                    batalha(jogador, jogador2);
+                    text();
 
                     break;
 
@@ -86,44 +93,27 @@ public class Confronto {
     }
 
     private void lutaRobo(int rounds) {
+
         for (int i = 0; i < rounds; i++) {
-            oponente = gerarCoisa(1);
-            oponente2 = gerarCoisa(2);
-            batalha(oponente, oponente2);
-            System.out.println("---------------------------------");
+            this.jogador = instanciar(jogador);
+            System.out.println("Jogador1 escolheu " + jogador.getEscolha().getClass().getSimpleName());
+            this.jogador2 = instanciar(jogador2);
+            System.out.println("Jogador2 escolheu " + jogador2.getEscolha().getClass().getSimpleName());
+            batalha(jogador, jogador2);
+            text();
         }
         somarPontos();
 
     }
 
-    private Coisa gerarCoisa(int jogador) {
-        int computador = gerador.nextInt(3) + 1;
-        Coisa jogada;
+    private void batalha(Jogador jogador1, Jogador jogador2) {
 
-        if (computador == 1) {
-            jogada = new Papel();
-        } else if (computador == 2) {
-            jogada = new Pedra();
-        } else {
-            jogada = new Tesoura();
-        }
-
-        System.out.println("Computador " + jogador + " escolheu " + jogada.getClass().getSimpleName());
-        return jogada;
-    }
-
-    private void batalha(Coisa jogador, Coisa oponente) {
-
-        if ((jogador instanceof Papel && oponente instanceof Pedra) ||
-                (jogador instanceof Pedra && oponente instanceof Tesoura) ||
-                (jogador instanceof Tesoura && oponente instanceof Papel)) {
+        if (jogador1.getEscolha().batalha(jogador2.getEscolha())) {
             pontos[0]++;
-            System.out.println("Desafiante ganhou a rodada");
-        } else if ((oponente instanceof Papel && jogador instanceof Pedra) ||
-                (oponente instanceof Pedra && jogador instanceof Tesoura) ||
-                (oponente instanceof Tesoura && jogador instanceof Papel)) {
+            System.out.println("Jogador1 ganhou a rodada");
+        } else if (jogador2.getEscolha().batalha(jogador1.getEscolha())) {
             pontos[1]++;
-            System.out.println("Desafiado ganhou a rodada");
+            System.out.println("Jogador2 ganhou a rodada");
         } else {
             System.out.println("Empatou. Ambos escolheram a mesma coisa.");
         }
@@ -138,29 +128,16 @@ public class Confronto {
         }
     }
 
-    private void escolha(int resposta2) {
-
-        if (resposta2 == 1) {
-            this.jogador = new Papel();
-        } else if (resposta2 == 2) {
-            this.jogador = new Pedra();
-        } else {
-            this.jogador = new Tesoura();
-        }
-
-        System.out.println("Você escolheu " + this.jogador.getClass().getSimpleName());
-
-    }
-
     private void somarPontos() {
         if (pontos[0] > pontos[1]) {
-            System.out.println("Desafiante ganhou com " + pontos[0] + " ponto(s)\n");
+            System.out.println(jogador.getClass().getSimpleName() + "1 ganhou com " + pontos[0] + " ponto(s)\n");
             resetarPontos();
 
         } else if (pontos[0] == pontos[1]) {
             System.out.println("Empate!!");
+            resetarPontos();
         } else {
-            System.out.println("Desafiado Ganhou o jogo com " + pontos[1] + " ponto(s) \n");
+            System.out.println(jogador.getClass().getSimpleName() + "2 ganhou com " + pontos[1] + " ponto(s)\n");
             resetarPontos();
         }
 
@@ -174,11 +151,33 @@ public class Confronto {
             lutaRobo(rounds);
         }
     }
-    private void resetarPontos(){
-        for(int i = 0; i < 2; i++){
+
+    private void resetarPontos() {
+        for (int i = 0; i < 2; i++) {
             pontos[i] = 0;
         }
     }
 
+    private Jogador instanciar(Jogador escolhido, int opcao) {
+        return escolhido = new Jogador(opcao);
 
+    }
+
+    private Jogador instanciar(Jogador escolhido) {
+
+        return escolhido = new Jogador();
+
+    }
+
+    private void text() {
+        System.out.println("---------------------------------\n");
+    }
+
+    private void escrever(Jogador player) {
+        System.out.println("Jogador1 escolheu " + player.getEscolha().getClass().getSimpleName());
+    }
+
+    private void escrever() {
+        System.out.println("Jogador2 escolheu " + jogador2.getEscolha().getClass().getSimpleName());
+    }
 }
